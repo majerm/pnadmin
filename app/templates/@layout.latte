@@ -15,18 +15,47 @@
 
 	<title>{block title|striptags|upper}Nette Application Skeleton{/block}</title>
 
-	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
-	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
+<!--	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
+	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">-->
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+
+	<script src="{$basePath}/bootstrap/js/bootstrap.js"></script>
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/bootstrap/css/bootstrap-responsive.css">
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/grido.css">
+
+	<script src="{$basePath}/js/jquery.min.js"></script>
+	<script src="{$basePath}/js/jquery.hashchange.min.js"></script>
+	<script src="{$basePath}/js/jquery.maskedinput.min.js"></script>	<script src="{$basePath}/js/bootstrap-datepicker.js"></script>
+	<script src="{$basePath}/js/netteForms.min.js"></script>
+	<script src="{$basePath}/js/jquery.nette.js"></script>
+	<script src="{$basePath}/js/jquery.ajaxform.js"></script>
+	<script src="{$basePath}/js/jquery.grido.js"></script>
+
 	{block head}{/block}
 </head>
 
 <body>
 	<script> document.body.className+=' js' </script>
 
-	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+	<div class="row">
+
+	{block #tableList}
+		<div class="span2">
+		<ul n:if="!empty($tableTitles)" class="nav nav-list well">
+			<li class="nav-header">{_'Tables'}</li>
+			<li n:foreach="$tableTitles as $service => $title"><a n:href="Table: $service">{$title}</a></li>
+		</ul>
+		</div>
+	{/block}
+	
+	<div class="span9">
+
+	<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">{$flash->message}</div>
 
 	{include #content}
+
+	</div>
 
 	{block scripts}
 	<script src="{$basePath}/js/jquery.js"></script>
