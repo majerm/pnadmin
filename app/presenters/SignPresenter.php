@@ -1,6 +1,8 @@
 <?php
 
-use Nette\Application\UI;
+namespace PNAdmin;
+
+use \Nette\Application\UI;
 
 
 /**
@@ -46,7 +48,7 @@ class SignPresenter extends BasePresenter
 
 		try {
 			$this->getUser()->login($values->username, $values->password);
-		} catch (Nette\Security\AuthenticationException $e) {
+		} catch (\Nette\Security\AuthenticationException $e) {
 			$form->addError($e->getMessage());
 			return;
 		}

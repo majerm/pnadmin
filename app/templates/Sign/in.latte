@@ -1,9 +1,38 @@
-{var $robots = noindex}
+{layout NULL}
+{**
+ * PNAdmin layout template.
+ *
+ * @param string   $basePath web base path
+ * @param string   $robots   tell robots how to index the content of a page (optional)
+ * @param array    $flashes  flash messages
+ *}
 
-{block #content}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="">
+	<meta name="robots" content="noindex">
 
-<h1 n:block=title>Sign in</h1>
+	<title>Login</title>
 
-{control signInForm}
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
+	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
+	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
 
-{* or use {include '../components/form.latte', form => $presenter[signInForm]} *}
+	<script src="{$basePath}/js/jquery.js"></script>
+	<script src="{$basePath}/js/netteForms.js"></script>
+	<script src="{$basePath}/js/main.js"></script>
+</head>
+
+<body>
+	<script> document.body.className+=' js' </script>
+
+	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+
+	<h1 n:block=title>Sign in</h1>
+
+	{control signInForm}
+
+</body>
+</html>

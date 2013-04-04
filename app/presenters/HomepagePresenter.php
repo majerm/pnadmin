@@ -1,14 +1,14 @@
 <?php
 
+namespace PNAdmin;
+
+use Nette\Application\UI\Form;
+
 /**
  * Homepage presenter.
  */
-class HomepagePresenter extends BasePresenter
+class HomepagePresenter extends ProtectedPresenter
 {
 
-	public function renderDefault()
-	{
-		$this->template->anyVariable = 'any value';
-	}
 
 }

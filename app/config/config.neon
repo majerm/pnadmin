@@ -5,6 +5,7 @@
 # http://nette.org/security-warning
 #
 common:
+
 	parameters:
 
 	php:
@@ -13,11 +14,11 @@ common:
 
 	nette:
 		application:
-			errorPresenter: Error
+			errorPresenter: PNAdmin\Error
 
 		database:
-			dsn: 'mysql:host=localhost;dbname=test'
-			user:
+			dsn: 'mysql:host=localhost;dbname=cuba'
+			user: 'root'
 			password:
 
 		session:
@@ -25,13 +26,24 @@ common:
 
 
 	services:
-		authenticator: Authenticator
-		routerFactory: RouterFactory
+		nette.presenterFactory: \PNAdmin\PresenterFactory(%appDir%)
+		authenticator: \PNAdmin\Authenticator
+		routerFactory: \PNAdmin\RouterFactory
 		router: @routerFactory::createRouter
 
+		admin: \PNAdmin\PresentableSelection('admin_user')
+		offer: \PNAdmin\PresentableSelection('offer')
+		offerVariant:  \PNAdmin\PresentableSelection('offer_variant')
+		sale:  \PNAdmin\PresentableSelection('sale')
+		paymentReturn:  \PNAdmin\PresentableSelection('payment_return')
+		voucher:  \PNAdmin\PresentableSelection('voucher')
+		comment:  \PNAdmin\PresentableSelection('comment')
+		translator:  \PNAdmin\Translator('translation')
 
-	factories:
-
+		tables: \PNAdmin\TablePresentation(
+			@admin, @offer, @offerVariant, @sale, @paymentReturn, @voucher,
+			@comment, @translator
+			)
 
 production < common:
 
