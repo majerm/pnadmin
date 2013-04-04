@@ -1,11 +1,13 @@
 <?php
 
-namespace PNAdmin;
+
+use Nette\Localization\ITranslator;
+use PNAdmin\Selections\PresentableSelection;
 
 /**
  * Translator.
  */
-class Translator extends PresentableSelection implements\Nette\Localization\ITranslator {
+class Translator extends PresentableSelection implements ITranslator {
 
 	protected $dictionary;
 

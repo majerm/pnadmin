@@ -2,16 +2,52 @@
 
 namespace PNAdmin;
 
+
+use Nette\Application\UI\Presenter;
+use Nette\InvalidStateException;
+use Nette\Localization\ITranslator;
+use PNAdmin\Selections\PresentableSelectionContainer;
+
 /**
  * Base presenter for all application presenters.
  */
-abstract class BasePresenter extends \Nette\Application\UI\Presenter
+abstract class BasePresenter extends Presenter
 {
-	public function beforeRender() {
-		parent::beforeRender();
-		$translator = $this->getService('translator');
-		if ($translator) {
-			$this->template->setTranslator($translator);
+	/** @var \PNAdmin\Selections\PresentableSelectionContainer */
+	protected $selectionContainer;
+
+	protected $translator;
+
+	public function startup() {
+		if (!$this->getUser()->isLoggedIn()) {
+			$this->redirect('Sign:in');
 		}
+
+		parent::startup();
 	}
+
+	public function injectSelectionContainer(PresentableSelectionContainer $container)
+	{
+		if ($this->selectionContainer) {
+			throw new InvalidStateException('Selection container was already set.');
+		}
+
+		$this->selectionContainer = $container;
+	}
+
+	public function injectTranslator(ITranslator $translator)
+	{
+		if ($this->translator) {
+			throw new InvalidStateException('Translator was already set.');
+		}
+
+		$this->translator = $translator;
+	}
+
+	public function beforeRender()
+	{
+		$this->template->tableTitles = $this->selectionContainer->getTitles();
+		$this->template->setTranslator($this->translator);
+	}
+
 }

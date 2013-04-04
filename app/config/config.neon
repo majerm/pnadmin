@@ -7,7 +7,7 @@
 common:
 
 	parameters:
-
+		selectionsNamespace: '\PNAdmin'
 	php:
 		date.timezone: Europe/Prague
 		# zlib.output_compression: yes
@@ -29,21 +29,43 @@ common:
 		nette.presenterFactory: \PNAdmin\PresenterFactory(%appDir%)
 		authenticator: \PNAdmin\Authenticator
 		routerFactory: \PNAdmin\RouterFactory
+		selectionsFactory: \PNAdmin\SelectionFactory(%selectionsNamespace%)
 		router: @routerFactory::createRouter
 
-		admin: \PNAdmin\PresentableSelection('admin_user')
-		offer: \PNAdmin\PresentableSelection('offer')
-		offerVariant:  \PNAdmin\PresentableSelection('offer_variant')
-		sale:  \PNAdmin\PresentableSelection('sale')
-		paymentReturn:  \PNAdmin\PresentableSelection('payment_return')
-		voucher:  \PNAdmin\PresentableSelection('voucher')
-		comment:  \PNAdmin\PresentableSelection('comment')
-		translator:  \PNAdmin\Translator('translation')
+		admin:
+			class: \PNAdmin\Selections\PresentableSelection
+			factory: @selectionsFactory::create('admin_user')
+		offer:
+			class: \PNAdmin\Selections\PresentableSelection
+			factory: @selectionsFactory::create('offer')
+		offerVariant:
+			class: \PNAdmin\Selections\PresentableSelection
+			factory: @selectionsFactory::create('offer_variant')
+		sale:
+			class: \PNAdmin\Selections\PresentableSelection
+			factory: @selectionsFactory::create('sale')
+		paymentReturn:
+			class: \PNAdmin\Selections\PresentableSelection
+			factory: @selectionsFactory::create('payment_return')
+		voucher:
+			class: \PNAdmin\Selections\PresentableSelection
+			factory: @selectionsFactory::create('voucher')
+		comment:
+			class: \PNAdmin\Selections\PresentableSelection
+			factory: @selectionsFactory::create('comment')
+		translator: \Translator('translation', @nette.database.default, %selectionsNamespace%)
 
-		tables: \PNAdmin\TablePresentation(
-			@admin, @offer, @offerVariant, @sale, @paymentReturn, @voucher,
-			@comment, @translator
-			)
+		tables:
+			class: \PNAdmin\Selections\PresentableSelectionContainer
+			setup:
+				- addSelection(@admin)
+				- addSelection(@offer)
+				- addSelection(@offerVariant)
+				- addSelection(@sale)
+				- addSelection(@paymentReturn)
+				- addSelection(@voucher)
+				- addSelection(@comment)
+				- addSelection(@translator)
 
 production < common:
 

@@ -1,7 +1,10 @@
 parameters:
 
 nette:
-
+	database:
+		dsn: 'mysql:host=localhost;dbname=amplion'
+		user: 'amplion'
+		password: amplion
 services:
 
 factories:

@@ -2,6 +2,7 @@
 
 namespace PNAdmin;
 
+use Nette\DI\Container;
 use \Nette\Security,
 	\Nette\Utils\Strings;
 
@@ -11,12 +12,12 @@ use \Nette\Security,
  */
 class Authenticator extends \Nette\Object implements Security\IAuthenticator
 {
-	/** @var Nette\DI\Container */
+	/** @var \Nette\DI\Container */
 	private $container;
 
 
 
-	public function __construct(\Nette\DI\Container $container)
+	public function __construct(Container $container)
 	{
 		$this->container = $container;
 	}
@@ -33,7 +34,7 @@ class Authenticator extends \Nette\Object implements Security\IAuthenticator
 
 		list($username, $password) = $credentials;
 
-		$user = $this->container->getService('admin')->get(array('login' => $username));
+		$user = $this->container->admin->get(array('login' => $username));
 		if (!$user) {
 			throw new Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
 		}

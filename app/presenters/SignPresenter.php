@@ -8,7 +8,7 @@ use \Nette\Application\UI;
 /**
  * Sign in/out presenters.
  */
-class SignPresenter extends BasePresenter
+class SignPresenter extends UI\Presenter
 {
 
 

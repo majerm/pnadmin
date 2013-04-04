@@ -3,51 +3,25 @@
 namespace PNAdmin;
 
 
+use PNAdmin\Presenters\Presenter;
+
 /**
  * Table presenter.
  */
-class TablePresenter extends ProtectedPresenter
+class TablePresenter extends Presenter
 {
 
-	public function renderDefault($table, $listingPage=1)
-	{
-		$service = $this->getService('tables')->get($table);
-
-		$translator = $this->getService('translator');
-		$grid = new \Grido\Grid($this, 'grido');
-		$model = $this->getService('tables')->get($table);
-		$grid->setModel($model);
-		$grid->setTranslator($translator);
-		$grid->setDefaultPerPage(30);
-		$grid->addAction('edit', 'Edit', \Grido\Components\Actions\Action::TYPE_HREF, 'Table:edit', array('table' => $table))
-		     ->setIcon('pencil');
-		$grid->setOperations(array('delete' => 'Delete'), function($operation, $id) {} );
-		
-		if ($model instanceof IGridoDataSource) {
-			$model->gridoConfigure($grid);
+	public function startup() {
+		if (!$this->getUser()->isLoggedIn()) {
+			$this->redirect('Sign:in');
 		}
-		$grid->setExporting();
-		
-	}
-	
-	public function renderEdit($table, $id)
-	{
+
+		parent::startup();
 	}
 
-	/**
-     * Handler for operations.
-     * @param string $operation
-     * @param array $id
-     */
-    public function gridOperationsHandler($operation, $id)
-    {
-        if ($id) {
-            $row = implode(', ', $id);
-            $this->flashMessage("Process operation '$operation' for row with id: $row...", 'info');
-        } else {
-            $this->flashMessage('No rows selected.', 'error');
-        }
-
-        $this->redirect($operation, array('id' => $id));
-    }
+	public function beforeRender() {
+		parent::beforeRender();
+		$this->template->tableTitles = $this->selectionContainer->getTitles();
+		$this->template->setTranslator($this->translator);
+	}
 }

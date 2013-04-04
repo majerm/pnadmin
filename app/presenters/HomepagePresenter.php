@@ -4,11 +4,11 @@ namespace PNAdmin;
 
 use Nette\Application\UI\Form;
 
+
 /**
  * Homepage presenter.
  */
-class HomepagePresenter extends ProtectedPresenter
+class HomepagePresenter extends BasePresenter
 {
-
 
 }
